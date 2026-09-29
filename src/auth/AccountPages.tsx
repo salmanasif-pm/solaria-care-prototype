@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import type { Surface } from '../domain/types';
 import { useStore } from '../store/store';
+import { useFeature } from '../features/FeatureContext';
 import { Button, Callout, Check, Field, Input } from '../ui';
 import { AuthCard, BrandMark } from './AuthCard';
 
@@ -16,12 +17,13 @@ export function Activate() {
   const [error, setError] = useState<string>();
   const [done, setDone] = useState<string | null>(null);
   const pendingInvite = state.staff.find((s) => s.status === 'invited');
+  const pinOn = useFeature('quickSwitch'); // PIN only matters for the future quick-switch idea
 
   const submit = () => {
     if (!code.trim()) return setError('Enter the invitation code from your email.');
     if (pw.length < 8) return setError('Choose a password of at least 8 characters.');
     if (pw !== pw2) return setError('Passwords do not match.');
-    if (!/^\d{4}$/.test(pin)) return setError('Choose a 4-digit PIN for quick switching on shared iPads.');
+    if (pinOn && !/^\d{4}$/.test(pin)) return setError('Choose a 4-digit PIN for quick switching on shared iPads.');
     const r = actions.activateAccount(code, pin);
     if (!r.ok) return setError(r.error);
     setDone(r.user.name);
@@ -44,7 +46,7 @@ export function Activate() {
             <Field label="New password" required><Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} /></Field>
             <Field label="Confirm password" required><Input type="password" value={pw2} onChange={(e) => setPw2(e.target.value)} /></Field>
           </div>
-          <Field label="Personal PIN (4 digits)" required help="Used to switch users on a shared iPad"><Input inputMode="numeric" maxLength={4} value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))} /></Field>
+          {pinOn && <Field label="Personal PIN (4 digits)" required help="Future idea (not in Phase 1): used to switch users on a shared iPad"><Input inputMode="numeric" maxLength={4} value={pin} onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))} /></Field>}
           {error && <Callout tone="danger">{error}</Callout>}
           <Button type="submit" variant="primary" size="lg" block>Activate account</Button>
           <Link to="/care/signin" className="small">Back to sign in</Link>
