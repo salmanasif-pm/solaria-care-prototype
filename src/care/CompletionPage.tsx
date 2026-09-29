@@ -9,11 +9,12 @@ import { fmtStamp, today } from '../domain/time';
 import { Badge, Button, Callout, Card, Choice, Field, Textarea, useToast } from '../ui';
 import { StaffChip } from './Timeline';
 
-/** Prototype assumption, pending client confirmation (roadmap question 3). Not tied to permissions. */
+/** Signature areas from the supplied flow sheet. Which are required is TBD with nursing leadership (roadmap
+ *  question 3), so none is modelled as mandatory; the prototype only asks for at least one signature. */
 export const SIGNOFF_ROLES: { role: SignoffRole; required: boolean; hint: string }[] = [
-  { role: 'PCA', required: true, hint: 'Personal care documentation' },
-  { role: 'Licensed Nurse', required: true, hint: 'LVN / licensed nursing documentation' },
-  { role: 'RN', required: false, hint: 'Where applicable - requirement to be confirmed' },
+  { role: 'PCA', required: false, hint: 'Signature area on the current paper form' },
+  { role: 'Licensed Nurse', required: false, hint: 'Signature area on the current paper form' },
+  { role: 'RN', required: false, hint: 'Signature area on the current paper form' },
 ];
 
 export function CompletionPage({ client }: { client: Client }) {
@@ -59,7 +60,7 @@ export function CompletionPage({ client }: { client: Client }) {
         </Field>
       </Card>
       <div className="stack">
-        <Card title="Sign-off" sub="Signature areas from the supplied flow sheet. Required signatures are pending nursing confirmation." id="signoff">
+        <Card title="Sign-off" sub="Signature areas from the supplied flow sheet. Which signatures are required - and by whom - is to be confirmed with nursing leadership." id="signoff">
           <div className="signoffs" data-tour="signoff">
             {SIGNOFF_ROLES.map((r) => {
               const s = sheet.signoffs.find((x) => x.role === r.role);
@@ -67,7 +68,7 @@ export function CompletionPage({ client }: { client: Client }) {
               return (
                 <div key={r.role} className={`signoff ${s ? 'signed' : ''}`}>
                   <div className="grow">
-                    <strong>{r.role} signature</strong> {r.required ? <Badge tone="outline">Required (assumed)</Badge> : <Badge tone="neutral">Where applicable</Badge>}
+                    <strong>{r.role} signature</strong> {r.required ? <Badge tone="outline">Required</Badge> : <Badge tone="neutral">Requirement TBD</Badge>}
                     <div className="small muted">{s && who ? <>Signed by <strong>{who.name}, {who.title}</strong> · {fmtStamp(s.at)}</> : r.hint}</div>
                   </div>
                   {!done && (s ? (s.staffId === me?.id && <Button size="sm" variant="ghost" onClick={() => actions.removeSignoff(sheet.id, r.role)}>Remove my signature</Button>)
@@ -76,7 +77,7 @@ export function CompletionPage({ client }: { client: Client }) {
               );
             })}
           </div>
-          <p className="small muted" style={{ marginBottom: 0 }}>Any signed-in staff member can sign an area in the prototype; who may sign which area is an open question for Solaria (not a separate app role).</p>
+          <p className="small muted" style={{ marginBottom: 0 }}>Prototype rule: at least one signature before completion; any signed-in Care Staff can sign any area. The required combination and who may sign each area are open questions for Solaria (not separate app roles).</p>
         </Card>
         <Card title="Parent copy">
           <Field label="Parent copy offered?">

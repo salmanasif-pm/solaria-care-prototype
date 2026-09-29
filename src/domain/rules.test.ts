@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildSeed } from '../data/seed';
 import { careCounts, completionGaps, ioTotals, permittedClients, todaysCare, entriesFor } from './care';
 import { today } from './time';
-import { dependents, FEATURES, isEffective, presetFlags, allOn } from '../features/registry';
+import { dependents, FEATURES, isEffective, presetFlags, roadmapScope } from '../features/registry';
 import { DOC_MODULES, ADMIN_NAV, CARE_NAV, ADMIN_CLIENT_TABS } from '../features/modules';
 
 const T = today();
@@ -61,15 +61,16 @@ describe('access scope', () => {
 });
 
 describe('completion', () => {
-  it('requires the assumed sign-offs and the parent-copy answers', () => {
+  it('needs at least one signature and the parent-copy answers (required combination TBD)', () => {
     const s = buildSeed();
     const sheet = s.sheets.find((x) => x.clientId === 'c_emily' && x.date === T)!;
-    expect(completionGaps(sheet, ['PCA', 'Licensed Nurse'])).toHaveLength(3);
-    sheet.signoffs = [{ role: 'PCA', staffId: 'u_james', at: '' }, { role: 'Licensed Nurse', staffId: 'u_sarah', at: '' }];
+    expect(completionGaps(sheet, [])).toEqual(['At least one signature', 'Parent copy offered: yes / no']);
+    sheet.signoffs = [{ role: 'RN', staffId: 'u_grace', at: '' }];
     sheet.parentCopyOffered = true;
-    expect(completionGaps(sheet, ['PCA', 'Licensed Nurse'])).toEqual(['Parent copy accepted: yes / no']);
+    expect(completionGaps(sheet, [])).toEqual(['Parent copy accepted: yes / no']);
     sheet.parentCopyAccepted = false;
-    expect(completionGaps(sheet, ['PCA', 'Licensed Nurse'])).toHaveLength(0);
+    expect(completionGaps(sheet, [])).toHaveLength(0);
+    expect(completionGaps(sheet, ['PCA'])).toEqual(['PCA sign-off']); // if Solaria later requires specific areas
   });
 });
 
@@ -80,14 +81,17 @@ describe('feature registry', () => {
     expect(isEffective(flags, 'medications')).toBe(false);
   });
   it('dependencies switch dependents off', () => {
-    const flags = { ...allOn(), history: false };
+    const flags = { ...roadmapScope(), history: false };
     expect(isEffective(flags, 'authorizationHistory')).toBe(false);
     expect(dependents('history')).toContain('authorizationHistory');
   });
-  it('presets are cumulative', () => {
+  it('presets are cumulative and never include future enhancements', () => {
     const core = presetFlags('core');
     expect(core.observations && core.assessments && !core.medications && !core.staffManagement).toBe(true);
-    expect(Object.values(presetFlags('admin')).every(Boolean)).toBe(true);
+    const full = roadmapScope();
+    expect(FEATURES.filter((f) => f.layer !== 'future').every((f) => full[f.id])).toBe(true);
+    expect(full.quickSwitch).toBe(false);
+    expect(presetFlags('lean').quickSwitch).toBe(false);
   });
   it('every module, nav item and tab references a registered feature', () => {
     const ids = new Set(FEATURES.map((f) => f.id));

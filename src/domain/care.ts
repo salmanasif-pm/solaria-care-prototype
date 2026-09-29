@@ -143,9 +143,11 @@ export function ioTotals(entries: FlowEntry[]): IoTotals {
   return t;
 }
 
-/** Sheet completion rule: every required sign-off present and the parent-copy question answered. */
+/** Sheet completion rule (conservative, pending nursing confirmation): at least one signature, any configured
+ *  required sign-offs, and the parent-copy question answered. */
 export function completionGaps(sheet: FlowSheet, required: string[]): string[] {
   const gaps: string[] = [];
+  if (sheet.signoffs.length === 0) gaps.push('At least one signature');
   for (const r of required) if (!sheet.signoffs.some((s) => s.role === r)) gaps.push(`${r} sign-off`);
   if (sheet.parentCopyOffered === null) gaps.push('Parent copy offered: yes / no');
   if (sheet.parentCopyOffered && sheet.parentCopyAccepted === null) gaps.push('Parent copy accepted: yes / no');

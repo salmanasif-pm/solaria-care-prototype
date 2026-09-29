@@ -70,7 +70,7 @@ export function SignIn({ surface }: { surface: Surface }) {
             </div>
             {surface === 'care' && quickSwitch && (
               <button type="button" className="pin-entry-btn" onClick={() => setPinMode(true)}>
-                <Icon name="swap" size={16} /> Shared iPad: switch user with PIN
+                <Icon name="swap" size={16} /> Future idea (not in Phase 1): switch user with PIN
               </button>
             )}
           </form>

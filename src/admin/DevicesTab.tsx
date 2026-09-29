@@ -4,7 +4,7 @@ import type { Client, DeviceRecord } from '../domain/types';
 import { useStore } from '../store/store';
 import { fmtDate, fmtStamp } from '../domain/time';
 import { Badge, Button, Card, Empty, Modal, useToast } from '../ui';
-import { DeviceEditor } from '../care/forms/DeviceEditor';
+import { DeviceEditor } from './DeviceEditor';
 
 export function DevicesTab({ client }: { client: Client }) {
   const { state } = useStore();
@@ -14,7 +14,7 @@ export function DevicesTab({ client }: { client: Client }) {
   const name = (id: string) => state.staff.find((s) => s.id === id)?.name ?? 'System';
   return (
     <>
-      <Card title="Feeding-tube & tracheostomy devices" sub="One current record per device. Client indicators and daily device checks read from here - type and size are never re-entered elsewhere." pad={false}
+      <Card title="Feeding-tube & tracheostomy devices" sub="Baseline device information, maintained here only. The iPad shows it read-only; client indicators and daily site checks read from it - type and size are never re-entered." pad={false}
         actions={<Button variant="primary" icon="plus" onClick={() => setEditing('new')}>Add device</Button>}>
         {devices.length === 0 ? <Empty title="No device records" hint="Add one if the client has a G-tube, NG tube or tracheostomy." icon="tube" /> : (
           <table className="table">

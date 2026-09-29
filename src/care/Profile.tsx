@@ -22,7 +22,7 @@ export function Profile() {
         ]} />
         <p className="small muted">Your role and care areas are managed by an administrator. Professional title labels your entries and signatures; it does not change what the app lets you do.</p>
         <div className="row">
-          {quick && <Button icon="swap" onClick={() => nav('/care/switch')}>Lock &amp; switch user</Button>}
+          {quick && <Button icon="swap" onClick={() => nav('/care/switch')}>Switch user by PIN (future idea)</Button>}
           <Button variant="danger" icon="logout" onClick={() => { actions.signOut('Logged out of Care Staff iPad; session terminated'); nav('/care/signin?ended=1'); }}>Log out</Button>
         </div>
       </Card>

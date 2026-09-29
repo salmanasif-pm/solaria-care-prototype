@@ -1,9 +1,9 @@
-// Edits the single current device record. Used from the care-staff device-care form and Web Admin.
+// Edits the single current device record. Web Admin only: Care Staff see the record read-only on the iPad.
 import { useState } from 'react';
-import type { DeviceRecord } from '../../domain/types';
-import { uid, useStore } from '../../store/store';
-import { today } from '../../domain/time';
-import { Button, Callout, Choice, Field, Input, Textarea } from '../../ui';
+import type { DeviceRecord } from '../domain/types';
+import { uid, useStore } from '../store/store';
+import { today } from '../domain/time';
+import { Button, Callout, Choice, Field, Input, Textarea } from '../ui';
 
 export function DeviceEditor({ clientId, device, onDone }: { clientId: string; device?: DeviceRecord; onDone: (savedId?: string) => void }) {
   const { actions } = useStore();

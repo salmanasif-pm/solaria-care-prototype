@@ -27,7 +27,7 @@ function useDemoValue() {
 
   const start = (id: Walkthrough['id']) => {
     const w = WALKTHROUGHS.find((x) => x.id === id)!;
-    if (w.preset) features.preset(w.preset); else if (!features.isFull && id !== 'lean') features.all();
+    if (w.preset) features.preset(w.preset); else if (!features.isFull) features.all();
     setActiveId(id);
     setIndex(0);
     const first = w.steps.find((s) => !s.requires || (w.preset ? true : features.on(s.requires)))!;

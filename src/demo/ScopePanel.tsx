@@ -9,9 +9,9 @@ export function ScopePanel({ onClose }: { onClose: () => void }) {
     <Modal title="Prototype scope" sub="Preview a leaner Phase 1. Switched-off capabilities disappear from navigation, pickers and screens; the core journey keeps working." onClose={onClose} width={760}
       footer={<><span className="small muted grow">Presenter control - not a product setting. Kept across Reset demo.</span><Button variant="primary" onClick={onClose}>Done</Button></>}>
       <div className="scope-presets">
-        {LAYERS.map((l) => (
-          <button key={l.key} type="button" className="scope-preset" onClick={() => (l.key === 'admin' ? f.all() : f.preset(l.key as Layer))}>
-            <strong>{l.key === 'admin' ? 'Full roadmap scope' : `Up to: ${l.label}`}</strong>
+        {LAYERS.filter((l) => l.key !== 'future').map((l) => (
+          <button key={l.key} type="button" className="scope-preset" onClick={() => (l.key === 'admin' ? f.all() : f.preset(l.key as Exclude<Layer, 'future'>))}>
+            <strong>{l.key === 'admin' ? 'Full Phase 1 roadmap scope' : `Up to: ${l.label}`}</strong>
             <span>{l.hint}</span>
           </button>
         ))}
@@ -28,7 +28,7 @@ export function ScopePanel({ onClose }: { onClose: () => void }) {
                 <div className="grow">
                   <div className="row" style={{ gap: 8 }}>
                     <strong>{x.label}</strong>
-                    <span className="small muted">Roadmap {x.roadmap.join(', ')}</span>
+                    <span className="small muted">{x.layer === 'future' ? 'Not in Phase 1 estimate' : `Roadmap ${x.roadmap.join(', ')}`}</span>
                     <Badge tone="outline">{x.surface === 'admin' ? 'Web Admin' : x.surface === 'care' ? 'iPad' : 'Both'}</Badge>
                   </div>
                   <div className="small muted">

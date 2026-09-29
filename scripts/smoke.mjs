@@ -177,17 +177,24 @@ await step('care: observations + assessment + device care', async () => {
   await expectText('COVID-19 and Pain assessment documented');
   await page.click('.care-item:has-text("G-tube site care") .ci-main');
   await expectText('Current device record');
+  await expectText('Maintained in Web Admin');
+  await noText('Update device details');
   await page.click('.sheet button:has-text("Clean / dry / intact")');
   await page.click('.sheet button[type="submit"]');
   await page.waitForSelector('.sheet', { state: 'detached' });
   await page.locator('.care-item.s-completed:has-text("G-tube site care")').waitFor();
 });
 
-await step('care: PIN quick switch → James documents brief change with output', async () => {
+await step('care: baseline hand-over - Sarah logs out, James signs in; brief change with output', async () => {
   await page.click('.care-user-btn');
-  await page.click('text=Lock & switch user');
-  await page.click('.pin-person:has-text("James Rivera")');
-  for (const d of '2031') await page.click(`.pin-pad button[aria-label="${d}"]`);
+  await page.click('.menu >> text=Log out');
+  await expectText('session was ended');
+  await noText('switch user with PIN'); // quick switch is a future idea, off in Phase 1 scope
+  await page.fill('input[autocomplete="username"]', 'SC-2031');
+  await page.fill('input[type="password"]', 'demo');
+  await page.click('button:has-text("Continue")');
+  await page.fill('.code-input', '246810');
+  await page.click('button:has-text("Verify and sign in")');
   await page.waitForSelector('[data-tour="client-board"]');
   await page.goto(BASE + '/care/clients/c_emily/document/activity');
   await page.click('.sheet button:has-text("Diaper / Brief Change")');
@@ -199,6 +206,23 @@ await step('care: PIN quick switch → James documents brief change with output'
   const chips = await page.locator('[data-tour="timeline"] .staff-chip:has-text("James")').count();
   if (chips < 3) throw new Error('expected James attribution on several entries');
   await shot('06-flow-sheet');
+});
+
+await step('future idea: PIN quick switch only when opted in, clearly labelled', async () => {
+  await page.goto(BASE + '/care/switch');
+  await expectText('not in the current scope');
+  await page.click('.demo-bar button[title*="smaller Phase 1"]');
+  await page.click('.scope-row:has-text("quick switch") .toggle');
+  await page.click('.modal button:has-text("Done")');
+  await page.click('.care-user-btn');
+  await page.click('text=Switch user by PIN (future idea)');
+  await expectText('not in the Phase 1 baseline or estimate');
+  await page.click('.pin-person:has-text("James Rivera")');
+  for (const d of '2031') await page.click(`.pin-pad button[aria-label="${d}"]`);
+  await page.waitForSelector('[data-tour="client-board"]');
+  await page.click('.demo-bar button[title*="smaller Phase 1"]');
+  await page.click('.scope-row:has-text("quick switch") .toggle');
+  await page.click('.modal button:has-text("Done")');
 });
 
 await step('care: mark not done, correction keeps original', async () => {
@@ -326,12 +350,12 @@ await step('scope: admin removed → Web Admin option disabled; intermediate sco
   await page.goto(BASE + '/care/clients/c_noah');
   // a scheduled device-care item with its module out of scope falls back to a care activity
   await page.click('.demo-bar button[title*="smaller Phase 1"]');
-  await page.click('.scope-preset:has-text("Full roadmap scope")');
+  await page.click('.scope-preset:has-text("Full Phase 1 roadmap scope")');
   await page.click('.modal button:has-text("Done")');
 });
 
 await step('walkthroughs A, B and C step through without dead ends', async () => {
-  for (const [label, count] of [['A · Administrative setup', 9], ['B · Care Staff daily documentation', 12], ['C · Lean Phase 1', 5]]) {
+  for (const [label, count] of [['A · Administrative setup', 10], ['B · Care Staff daily documentation', 13], ['C · Lean Phase 1', 6]]) {
     await page.click('.demo-bar button[title="Walkthroughs"]');
     await page.click(`.demo-menu button:has-text("${label}")`);
     for (let i = 1; i < count; i++) {
@@ -344,7 +368,7 @@ await step('walkthroughs A, B and C step through without dead ends', async () =>
     await page.click('.walk button:has-text("Finish")');
   }
   await page.click('.demo-bar button[title*="smaller Phase 1"]');
-  await page.click('.scope-preset:has-text("Full roadmap scope")');
+  await page.click('.scope-preset:has-text("Full Phase 1 roadmap scope")');
   await page.click('.modal button:has-text("Done")');
 });
 

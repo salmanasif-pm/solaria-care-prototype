@@ -46,7 +46,7 @@ export function CareShell() {
             <div className="menu" role="menu">
               <div className="menu-head"><strong>{me?.name}</strong><span>{me?.title} · {me?.location}</span></div>
               <button type="button" role="menuitem" onClick={() => nav('/care/profile')}><Icon name="user" size={15} />Profile</button>
-              {quickSwitch && <button type="button" role="menuitem" onClick={() => nav('/care/switch')}><Icon name="swap" size={15} />Lock &amp; switch user</button>}
+              {quickSwitch && <button type="button" role="menuitem" onClick={() => nav('/care/switch')}><Icon name="swap" size={15} />Switch user by PIN (future idea)</button>}
               <button type="button" role="menuitem" onClick={logout}><Icon name="logout" size={15} />Log out</button>
             </div>
           )}

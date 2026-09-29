@@ -64,7 +64,7 @@ export function DemoBar() {
           )}
         </div>
         <button type="button" className={`demo-btn ${features.isFull ? '' : 'warn'}`} onClick={() => setScope(true)} title="Preview a smaller Phase 1 by switching capabilities off">
-          <Icon name="layers" size={13} /><span className="lbl">Scope{features.isFull ? '' : ': reduced'}</span>
+          <Icon name="layers" size={13} /><span className="lbl">Scope{features.isFull ? '' : features.futureOn ? ': + future idea' : ': reduced'}</span>
         </button>
         <label className="demo-btn time" title="Demo clock drives due / overdue status">
           <Icon name="clock" size={13} />

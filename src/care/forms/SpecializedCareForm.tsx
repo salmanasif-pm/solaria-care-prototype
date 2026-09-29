@@ -1,12 +1,11 @@
-// 4.7 Feeding-tube and tracheostomy care. One current device record per device (single source);
-// daily checks reference it instead of re-entering type/size.
+// 4.7 Feeding-tube and tracheostomy daily care. The device record itself is baseline information maintained
+// in Web Admin (single source); the iPad shows it read-only and records today's site check against it.
 import { useState } from 'react';
 import type { DeviceRecord } from '../../domain/types';
 import { useStore } from '../../store/store';
 import { fmtDate } from '../../domain/time';
-import { Button, Choice, Field, MultiChoice, Textarea, useToast } from '../../ui';
+import { Button, Choice, Field, MultiChoice, Textarea } from '../../ui';
 import { details, FormFrame, Section, useCareTime, useSave, type DocFormProps } from './common';
-import { DeviceEditor } from './DeviceEditor';
 
 const SITE = ['Clean / dry / intact', 'Redness', 'Drainage', 'Leakage', 'Granulation tissue', 'Bleeding'] as const;
 const CARE: Record<DeviceRecord['type'], string[]> = {
@@ -17,7 +16,6 @@ const CARE: Record<DeviceRecord['type'], string[]> = {
 
 export function SpecializedCareForm({ client, item, onSaved, onCancel }: DocFormProps) {
   const { state } = useStore();
-  const toast = useToast();
   const [careTime, setCareTime] = useCareTime();
   const devices = state.devices.filter((d) => d.clientId === client.id && d.active);
   const guess = item ? devices.find((d) => item.name.toLowerCase().includes(d.type === 'Tracheostomy' ? 'trach' : 'tube')) : undefined;
@@ -25,20 +23,15 @@ export function SpecializedCareForm({ client, item, onSaved, onCancel }: DocForm
   const [site, setSite] = useState('');
   const [care, setCare] = useState<string[]>([]);
   const [notes, setNotes] = useState('');
-  const [editing, setEditing] = useState<DeviceRecord | 'new' | null>(null);
   const [error, setError] = useState<string>();
   const save = useSave(client, item, onSaved);
   const device = devices.find((d) => d.id === deviceId);
 
-  if (editing) {
-    return <DeviceEditor clientId={client.id} device={editing === 'new' ? undefined : editing} onDone={(id) => { setEditing(null); if (id) { setDeviceId(id); toast('Device record saved'); } }} />;
-  }
   if (!device) {
     return (
       <div className="stack">
-        <p className="muted">{client.firstName} has no feeding-tube or tracheostomy device on record.</p>
-        <div><Button icon="plus" onClick={() => setEditing('new')}>Add device record</Button></div>
-        <div><Button variant="ghost" onClick={onCancel}>Cancel</Button></div>
+        <p className="muted">{client.firstName} has no feeding-tube or tracheostomy device on record. Device records are set up by an administrative user in Web Admin (client → Devices).</p>
+        <div><Button variant="ghost" onClick={onCancel}>Close</Button></div>
       </div>
     );
   }
@@ -66,7 +59,7 @@ export function SpecializedCareForm({ client, item, onSaved, onCancel }: DocForm
           <div>Size {device.size} · last changed {fmtDate(device.lastChanged)}</div>
           {device.details && <div className="small muted">{device.details}</div>}
         </div>
-        <Button size="sm" variant="ghost" icon="edit" onClick={() => setEditing(device)}>Update device details</Button>
+        <span className="small muted">Maintained in Web Admin</span>
       </div>
       <Section title="Daily check / site care">
         <Field label="Site condition" required><Choice size="sm" options={SITE} value={site} onChange={(v) => { setSite(v); setError(undefined); }} allowClear={false} /></Field>

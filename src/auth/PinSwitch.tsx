@@ -37,6 +37,7 @@ export function PinSwitch({ onCancel }: { onCancel: () => void }) {
       <BrandMark surface="care" />
       <h1 className="auth-title">Switch user</h1>
       <p className="muted small" style={{ marginTop: 0 }}>Shared iPad · {location}. Entries are attributed to whoever switches in.</p>
+      <div className="proto-note" data-demo style={{ marginTop: 0, marginBottom: 12 }}><strong>Future / recommended enhancement - not in the Phase 1 baseline or estimate.</strong> Phase 1 hand-over is log out, then sign in with your own account.</div>
       {!who ? (
         <div className="pin-people">
           {people.map((p) => (

@@ -23,7 +23,9 @@ The build is a relocatable static site (`base: './'`, hash routing), so it runs 
 
 ## Using it in a meeting
 
-Open the start page, pick **Web Admin** or **Care Staff · iPad**, or start a guided walkthrough. The dashed **Prototype** bar is presenter-only: switch user / surface, walkthroughs, **Scope** (live scope reduction), demo clock and **Reset demo**. Credentials: password `demo`, MFA code `246810`, PINs = last 4 digits of employee ID.
+Open the start page, pick **Web Admin** or **Care Staff · iPad**, or start a guided walkthrough. The dashed **Prototype** bar is presenter-only: switch user / surface, walkthroughs, **Scope** (live scope reduction), demo clock and **Reset demo**. Credentials: password `demo`, MFA code `246810`.
+
+Phase 1 baseline hand-over on a shared iPad is log out → sign in with your own account. PIN quick switching exists only as a **future / recommended enhancement** (Scope → Future enhancements, off by default, not in the Phase 1 estimate).
 
 - [DEMO_WALKTHROUGHS.md](DEMO_WALKTHROUGHS.md) - presenter scripts (Admin setup, Care Staff day, Lean version)
 - [PROTOTYPE_SCOPE_MAP.md](PROTOTYPE_SCOPE_MAP.md) - roadmap ID → screen → user → surface → removable, plus assumptions and conflicts
@@ -38,7 +40,7 @@ src/features/modules.tsx      manifest: documentation types, care nav, admin nav
 src/domain/                   types, date helpers, pure rules (today's care, I/O totals, access scope, completion)
 src/data/seed.ts              fictional scenario (6 clients, 7 staff, 8 days of history, today's entries)
 src/store/store.tsx           shared state + all workflow actions + audit events, localStorage, reset
-src/auth/                     sign-in + MFA, PIN quick switch, activation, password recovery, terms
+src/auth/                     sign-in + MFA, activation, password recovery, terms (+ PIN quick switch: future idea, off by default)
 src/care/                     iPad: client board, workspace, timeline, flow sheet, completion, records
 src/care/forms/               one independent file per documentation type
 src/admin/                    Web Admin: clients, client record tabs, schedule, medications, devices, authorizations, staff, audit

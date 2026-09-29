@@ -13,7 +13,7 @@ export interface Step {
   target?: string; // data-tour value to highlight
   requires?: FeatureId; // step is skipped when the feature is out of scope
 }
-export interface Walkthrough { id: 'admin' | 'care' | 'lean'; title: string; sub: string; preset?: Layer; steps: Step[] }
+export interface Walkthrough { id: 'admin' | 'care' | 'lean'; title: string; sub: string; preset?: Exclude<Layer, 'future'>; steps: Step[] }
 
 export const WALKTHROUGHS: Walkthrough[] = [
   {
@@ -25,6 +25,7 @@ export const WALKTHROUGHS: Walkthrough[] = [
       { title: 'Client record', body: "Emily Carter's demographics and care context. Tabs hold the care schedule, medications, device record and authorization periods.", route: '/admin/clients/c_emily', user: 'u_dana', surface: 'admin', target: 'client-tabs', requires: 'clientManagement' },
       { title: 'Care instructions & schedule', body: 'Add a scheduled activity (name, instructions, time, days, active). It appears in the Care Staff "Today\'s Care" immediately. Change history is kept.', route: '/admin/clients/c_emily/care-schedule', user: 'u_dana', surface: 'admin', target: 'schedule-add', requires: 'scheduleManagement' },
       { title: 'Medications', body: 'Bounded setup: medication, dose, route, schedule. Scheduled doses flow to Care Staff. No drug database or e-prescribing.', route: '/admin/clients/c_emily/medications', user: 'u_dana', surface: 'admin', target: 'med-table', requires: 'medications' },
+      { title: 'Device baseline (optional module)', body: 'Feeding-tube / tracheostomy type, size and details are maintained here once. Care Staff see them read-only and record daily site checks against them.', route: '/admin/clients/c_emily/devices', user: 'u_dana', surface: 'admin', requires: 'specializedCare' },
       { title: 'Staff & access', body: 'Invite staff with role (Administrative User or Care Staff), location and care areas. Deactivate/reactivate; history stays attributed.', route: '/admin/staff', user: 'u_dana', surface: 'admin', target: 'staff-table', requires: 'staffManagement' },
       { title: 'Audit trail', body: 'Who did what, when, to which client - sign-ins, documentation, schedule and access changes, record prints.', route: '/admin/audit', user: 'u_dana', surface: 'admin', target: 'audit-table', requires: 'auditTrail' },
       { title: 'Switch to Care Staff', body: 'Now the iPad: Sarah Mitchell (LVN) sees the clients in her care areas and today\'s required care, including anything just added.', route: '/care/clients', user: 'u_sarah', surface: 'care', target: 'client-board' },
@@ -41,9 +42,11 @@ export const WALKTHROUGHS: Walkthrough[] = [
       { title: 'Document intake', body: 'Record 120 mL via G-tube. Time and staff attribution are automatic.', route: '/care/clients/c_emily/document/intakeOutput', user: 'u_sarah', surface: 'care', target: 'doc-sheet', requires: 'intakeOutput' },
       { title: 'Record a medication', body: 'Glycopyrrolate 0.5 mg is scheduled at 12:00. Mark it Given (or Held / Refused / Omitted with a note) - the scheduled dose shows completed.', route: '/care/clients/c_emily/document/medication', user: 'u_sarah', surface: 'care', target: 'doc-sheet', requires: 'medications' },
       { title: 'Another documentation type', body: 'Assessment: ten sections in accordions. "Mark within normal limits" speeds up routine sections.', route: '/care/clients/c_emily/document/assessment', user: 'u_sarah', surface: 'care', target: 'doc-sheet', requires: 'assessments' },
-      { title: 'Hand the iPad to James', body: 'Quick switch by PIN keeps individual attribution on a shared device. James (PCA) adds a brief change; its output counts in Intake & Output without a second entry.', route: '/care/clients/c_emily/document/activity', user: 'u_james', surface: 'care', target: 'doc-sheet' },
+      { title: 'Hand over the shared iPad', body: 'Phase 1 baseline: Sarah logs out and James signs in with his own account (email or employee ID, password, MFA), so every entry stays individually attributed. (A faster PIN hand-over is only a possible future enhancement - see Scope.)', route: '/care/signin?ended=1', user: null, surface: 'care', target: 'signin' },
+      { title: 'James documents a brief change', body: 'Signed in as James (PCA). The output recorded here counts in Intake & Output without a second entry.', route: '/care/clients/c_emily/document/activity', user: 'u_james', surface: 'care', target: 'doc-sheet' },
+      { title: 'Optional future idea: PIN quick switch', body: 'Not in the Phase 1 baseline or estimate. Shown only if switched on in Scope → Future enhancements. Could be added later if repeated sign-in on shared iPads proves operationally burdensome.', route: '/care/switch', user: 'u_james', surface: 'care', requires: 'quickSwitch' },
       { title: 'Entries in the shared timeline', body: 'Every form feeds one timeline. Contributions stay distinguishable; corrections are appended, never overwritten.', route: '/care/clients/c_emily/flow-sheet', user: 'u_sarah', surface: 'care', target: 'timeline' },
-      { title: 'Review, sign-off, complete', body: 'PCA / Licensed Nurse / RN signature areas (requirements pending nursing confirmation), parent copy offered / accepted, then complete. The record becomes read-only.', route: '/care/clients/c_emily/complete', user: 'u_sarah', surface: 'care', target: 'signoff', requires: 'completionSignoff' },
+      { title: 'Review, sign-off, complete', body: 'The PCA / Licensed Nurse / RN signature areas from the paper form are shown; which signatures are required is still to be confirmed with nursing leadership (the prototype asks for at least one). Record parent copy offered / accepted, then complete - the record becomes read-only.', route: '/care/clients/c_emily/complete', user: 'u_sarah', surface: 'care', target: 'signoff', requires: 'completionSignoff' },
       { title: 'Records & history', body: 'Find prior flow sheets by client and date range (or the current authorization period), open read-only, print or save as PDF.', route: '/care/records', user: 'u_sarah', surface: 'care', target: 'records', requires: 'history' },
     ],
   },
@@ -54,7 +57,8 @@ export const WALKTHROUGHS: Walkthrough[] = [
       { title: 'Client list', body: 'The same client board, without schedule counts.', route: '/care/clients', user: 'u_james', surface: 'care', target: 'client-board' },
       { title: 'Open a client', body: 'Basic client context: name, DOB/age, care area, indicators.', route: '/care/clients/c_liam', user: 'u_james', surface: 'care', target: 'client-header' },
       { title: 'Record a routine care activity', body: 'Only Care Activity remains in the picker. Toileting with optional output.', route: '/care/clients/c_liam/document/activity', user: 'u_james', surface: 'care', target: 'doc-sheet' },
-      { title: "See today's entries", body: 'The saved entry appears in the shared timeline with time and staff. Restore full scope from the Scope panel when done.', route: '/care/clients/c_liam', user: 'u_james', surface: 'care', target: 'timeline' },
+      { title: "See today's entries", body: 'The saved entry appears in the shared timeline with time and staff.', route: '/care/clients/c_liam', user: 'u_james', surface: 'care', target: 'timeline' },
+      { title: 'Log out', body: 'Logging out ends the session; the next person signs in with their own account. That is the complete lean workflow. Restore full scope from the Scope panel when done.', route: '/care/signin?ended=1', user: null, surface: 'care', target: 'signin' },
     ],
   },
 ];

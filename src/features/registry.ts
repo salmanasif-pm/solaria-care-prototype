@@ -9,7 +9,7 @@
 //   2. delete its module folder and its entry in src/features/modules.tsx.
 // Core features (removable: false) make up the leanest journey and must stay.
 
-export type Layer = 'lean' | 'core' | 'extended' | 'admin';
+export type Layer = 'lean' | 'core' | 'extended' | 'admin' | 'future';
 
 export type FeatureId =
   | 'clientBoard'
@@ -55,7 +55,6 @@ export const FEATURES: FeatureDef[] = [
   { id: 'observations', label: 'Observations / vitals', roadmap: ['4.2'], layer: 'core', removable: true, surface: 'care', summary: 'Time-based vitals and nursing care.' },
   { id: 'intakeOutput', label: 'Intake & output', roadmap: ['4.3'], layer: 'core', removable: true, surface: 'care', summary: 'Intake type/amount/route; urine, stool, emesis.' },
   { id: 'assessments', label: 'Assessments', roadmap: ['4.4'], layer: 'core', removable: true, surface: 'care', summary: 'Ten structured body-system sections.' },
-  { id: 'quickSwitch', label: 'Shared-iPad quick switch (PIN)', roadmap: ['2.1', '2.3', '7.1'], layer: 'core', removable: true, surface: 'care', summary: 'Hand the iPad over without losing attribution.' },
   { id: 'mfa', label: 'Multi-factor sign-in', roadmap: ['2.3'], layer: 'core', removable: true, surface: 'both', summary: 'Verification code after password (simulated).' },
 
   // Extended clinical documentation.
@@ -72,6 +71,10 @@ export const FEATURES: FeatureDef[] = [
   { id: 'scheduleManagement', label: 'Care schedule management', roadmap: ['6.2'], layer: 'admin', removable: true, surface: 'admin', dependsOn: ['clientManagement', 'careSchedule'], summary: 'Add / edit / deactivate scheduled care, change history.' },
   { id: 'staffManagement', label: 'Staff & access', roadmap: ['6.3'], layer: 'admin', removable: true, surface: 'admin', summary: 'Invite, assign care areas, deactivate / reactivate.' },
   { id: 'auditTrail', label: 'Audit trail', roadmap: ['6.5', '7.1'], layer: 'admin', removable: true, surface: 'admin', summary: 'Filtered, attributable activity log.' },
+
+  // Future / recommended enhancements: demo-only, NOT in the Phase 1 baseline or estimate. Off by default.
+  // Baseline hand-over on a shared iPad is: User A logs out -> User B signs in with their own account.
+  { id: 'quickSwitch', label: 'Shared-iPad quick switch (PIN)', roadmap: ['Future'], layer: 'future', removable: true, surface: 'care', summary: 'Faster hand-over by PIN if repeated sign-in proves burdensome. Not in the Phase 1 estimate.' },
 ];
 
 export const LAYERS: { key: Layer; label: string; hint: string }[] = [
@@ -79,6 +82,7 @@ export const LAYERS: { key: Layer; label: string; hint: string }[] = [
   { key: 'core', label: 'Core care documentation', hint: 'Adds care schedule, observations, intake & output, assessments.' },
   { key: 'extended', label: 'Extended clinical documentation', hint: 'Adds medications, device care, completion / sign-off, history.' },
   { key: 'admin', label: 'Administrative controls', hint: 'Adds client configuration, schedule management, staff, audit.' },
+  { key: 'future', label: 'Future / recommended enhancements (not in Phase 1 estimate)', hint: 'Optional demo of ideas outside the baseline.' },
 ];
 
 export type FeatureFlags = Record<FeatureId, boolean>;
@@ -86,14 +90,15 @@ export type FeatureFlags = Record<FeatureId, boolean>;
 const byId = Object.fromEntries(FEATURES.map((f) => [f.id, f])) as Record<FeatureId, FeatureDef>;
 export const feature = (id: FeatureId) => byId[id];
 
-export const allOn = (): FeatureFlags => Object.fromEntries(FEATURES.map((f) => [f.id, true])) as FeatureFlags;
-
-/** Cumulative presets: each layer includes everything before it. */
-export function presetFlags(upTo: Layer): FeatureFlags {
+/** Cumulative presets: each layer includes everything before it. Future enhancements are never part of a preset. */
+export function presetFlags(upTo: Exclude<Layer, 'future'>): FeatureFlags {
   const order: Layer[] = ['lean', 'core', 'extended', 'admin'];
   const max = order.indexOf(upTo);
-  return Object.fromEntries(FEATURES.map((f) => [f.id, !f.removable || order.indexOf(f.layer) <= max])) as FeatureFlags;
+  return Object.fromEntries(FEATURES.map((f) => [f.id, !f.removable || (f.layer !== 'future' && order.indexOf(f.layer) <= max)])) as FeatureFlags;
 }
+/** Default scope: the full Phase 1 roadmap, future enhancements off. */
+export const roadmapScope = (): FeatureFlags => presetFlags('admin');
+export const isRoadmapScope = (flags: FeatureFlags) => FEATURES.every((f) => flags[f.id] === roadmapScope()[f.id]);
 
 /** A feature is effective only when it is switched on and every dependency is effective. */
 export function isEffective(flags: FeatureFlags, id: FeatureId, seen: Set<FeatureId> = new Set()): boolean {

@@ -5,9 +5,11 @@ Use the presenter **Scope** panel to show the prospect each smaller version live
 | Preset | Adds | What the prospect sees |
 | --- | --- | --- |
 | **Leanest version** | Sign-in, client board, open client, Care Activity, today's entries | Login → Clients → client header → Add documentation (Care Activity only) → entry in timeline. No Web Admin: clients and staff are loaded once at go-live. |
-| **Core care documentation** | Today's schedule (3.1), Observations (4.2), Intake & Output (4.3), Assessments (4.4), PIN quick switch, MFA | Today's Care lists and counts appear; four documentation types. |
+| **Core care documentation** | Today's schedule (3.1), Observations (4.2), Intake & Output (4.3), Assessments (4.4), MFA | Today's Care lists and counts appear; four documentation types. |
 | **Extended clinical documentation** | Medications (4.8), Device care (4.7), Completion / sign-off (5.1), Records (5.2), Authorization periods (5.3), Terms, Activation / recovery | Medication doses, device records, Review & complete tab, Records nav. |
-| **Full roadmap scope** | Web Admin: Client management (6.1), Schedule management (6.2), Staff & access (6.3), Audit trail (6.5) | Web Admin available in the switcher. |
+| **Full Phase 1 roadmap scope** | Web Admin: Client management (6.1), Schedule management (6.2), Staff & access (6.3), Audit trail (6.5) | Web Admin available in the switcher. |
+
+No preset includes **future enhancements** (currently: PIN quick switch). They are off by default and must be switched on individually in Scope; they are not in the Phase 1 estimate.
 
 ## What can be removed independently
 
@@ -15,7 +17,7 @@ Use the presenter **Scope** panel to show the prospect each smaller version live
 | --- | --- | --- |
 | Observations, Intake & Output, Assessments | Yes | Scheduled items of that type are documented as a Care Activity. Past entries still show. I/O card disappears with Intake & Output; toileting output is still recorded on the activity. |
 | Medications | Yes | Doses leave Today's Care; the admin Medications tab goes. |
-| Specialized care (devices) | Yes | Devices tab, device indicators and the device-care form go; assessments stop showing device-specific questions. |
+| Specialized care (devices) | Yes | Web Admin Devices tab, device indicators and the iPad device-care form go; assessments stop showing device-specific questions. |
 | Completion & sign-off | Yes | Flow sheets stay open (no locked record, no parent-copy field). Records still list them. |
 | Records & history | Yes | **Also removes** authorization-period history (dependency). |
 | Authorization periods | Yes | Records loses the "current period" filter. |
@@ -24,7 +26,8 @@ Use the presenter **Scope** panel to show the prospect each smaller version live
 | Client management (6.1) | Yes | **Also removes** schedule management. Clients loaded at go-live. |
 | Staff & access (6.3) | Yes | **Also removes** activation / password recovery; accounts provisioned at go-live. |
 | Audit trail viewer (6.5) | Yes | Events are still captured by the backend; only the viewer goes. Not advisable for HIPAA. |
-| MFA, PIN quick switch, terms | Yes | Security / usability trade-off to discuss (PIN switch was the prospect's core pain point). |
+| MFA, terms | Yes | Security trade-off to discuss. |
+| PIN quick switch | Already excluded | Future / recommended idea only. Baseline hand-over is log out → sign in with own account. |
 | Client board, Care Activity, timeline, sign-in | **No** | This is the minimum usable product. |
 
 ## Removing a capability from the code

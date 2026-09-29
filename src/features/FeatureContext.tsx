@@ -1,12 +1,12 @@
-// Runtime scope switches for the presenter "Scope" panel. Screens call useFeature(id); nothing else
+// Runtime scope switches for the presenter "Scope" panel (default: full Phase 1 roadmap, future enhancements off). Screens call useFeature(id); nothing else
 // decides whether a capability is shown. Persisted separately from demo data so Reset keeps the scope.
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { ADMIN_FEATURES, allOn, isEffective, presetFlags, type FeatureFlags, type FeatureId, type Layer } from './registry';
+import { ADMIN_FEATURES, isEffective, isRoadmapScope, presetFlags, roadmapScope, type FeatureFlags, type FeatureId, type Layer } from './registry';
 
-const KEY = 'solaria-prototype-scope';
+const KEY = 'solaria-prototype-scope-v2';
 
 function load(): FeatureFlags {
-  const base = allOn();
+  const base = roadmapScope();
   try {
     const raw = localStorage.getItem(KEY);
     if (raw) return { ...base, ...(JSON.parse(raw) as Partial<FeatureFlags>) };
@@ -22,10 +22,11 @@ function useFeatureValue() {
     flags,
     on,
     set: (id: FeatureId, value: boolean) => setFlags((f) => ({ ...f, [id]: value })),
-    preset: (layer: Layer) => setFlags(presetFlags(layer)),
-    all: () => setFlags(allOn()),
+    preset: (layer: Exclude<Layer, 'future'>) => setFlags(presetFlags(layer)),
+    all: () => setFlags(roadmapScope()),
     adminAvailable: ADMIN_FEATURES.some((id) => isEffective(flags, id)),
-    isFull: Object.values(flags).every(Boolean),
+    isFull: isRoadmapScope(flags),
+    futureOn: flags.quickSwitch,
   }), [flags, on]);
 }
 
