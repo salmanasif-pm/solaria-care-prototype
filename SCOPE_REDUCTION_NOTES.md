@@ -4,8 +4,8 @@ Use the presenter **Scope** panel to show the prospect each smaller version live
 
 | Preset | Adds | What the prospect sees |
 | --- | --- | --- |
-| **Leanest version** | Sign-in, client board, open client, Care Activity, today's entries | Login → Clients → client header → Add documentation (Care Activity only) → entry in timeline. No Web Admin: clients and staff are loaded once at go-live. |
-| **Core care documentation** | Today's schedule (3.1), Observations (4.2), Intake & Output (4.3), Assessments (4.4), MFA | Today's Care lists and counts appear; four documentation types. |
+| **Leanest version** | Sign-in with MFA, client board, open client, Care Activity, today's entries, logout | Login + MFA → Clients → client header → Add documentation (Care Activity only) → entry in timeline. No Web Admin: clients and staff are loaded once at go-live. |
+| **Core care documentation** | Today's schedule (3.1), Observations (4.2), Intake & Output (4.3), Assessments (4.4) | Today's Care lists and counts appear; four documentation types. |
 | **Extended clinical documentation** | Medications (4.8), Device care (4.7), Completion / sign-off (5.1), Records (5.2), Authorization periods (5.3), Terms, Activation / recovery | Medication doses, device records, Review & complete tab, Records nav. |
 | **Full Phase 1 roadmap scope** | Web Admin: Client management (6.1), Schedule management (6.2), Staff & access (6.3), Audit trail (6.5) | Web Admin available in the switcher. |
 
@@ -26,9 +26,9 @@ No preset includes **future enhancements** (currently: PIN quick switch). They a
 | Client management (6.1) | Yes | **Also removes** schedule management. Clients loaded at go-live. |
 | Staff & access (6.3) | Yes | **Also removes** activation / password recovery; accounts provisioned at go-live. |
 | Audit trail viewer (6.5) | Yes | Events are still captured by the backend; only the viewer goes. Not advisable for HIPAA. |
-| MFA, terms | Yes | Security trade-off to discuss. |
+| Terms acceptance | Yes | Compliance trade-off to discuss. |
 | PIN quick switch | Already excluded | Future / recommended idea only. Baseline hand-over is log out → sign in with own account. |
-| Client board, Care Activity, timeline, sign-in | **No** | This is the minimum usable product. |
+| Client board, Care Activity, timeline, sign-in with MFA, logout | **No** | This is the minimum usable product. MFA is baseline security (common authentication), not a budget option. |
 
 ## Removing a capability from the code
 

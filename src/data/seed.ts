@@ -218,7 +218,7 @@ export function buildSeed(): AppState {
   log(stamp(addDays(T, -1), '11:02'), 'u_dana', 'Staff & access', 'Invitation sent: Nina Park (Direct-Care Staff)');
   log(stamp(addDays(T, -1), '16:05'), 'u_grace', 'Record access', 'Printed flow sheet: Noah Bennett', 'c_noah');
   log(stamp(T, '07:31'), 'u_james', 'Authentication', 'Signed in (password + MFA) on shared iPad');
-  log(stamp(T, '07:58'), 'u_sarah', 'Authentication', 'Switched in by PIN on shared iPad');
+  log(stamp(T, '07:58'), 'u_sarah', 'Authentication', 'Signed in (password + MFA) on shared iPad');
   log(stamp(T, '08:40'), 'u_dana', 'Authentication', 'Signed in to Web Admin (password + MFA)');
   log(stamp(T, '08:52'), 'u_dana', 'Client', 'Updated client record: Ava Morales · weight', 'c_ava');
   const nameOf = Object.fromEntries(clients.map((c) => [c.id, `${c.firstName} ${c.lastName}`]));

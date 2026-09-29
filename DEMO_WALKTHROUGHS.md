@@ -44,7 +44,7 @@ Demo credentials: any seeded email or employee ID, password `demo`, MFA code `24
 
 Starts by setting Scope to **Leanest version**.
 
-1. Sign in on the iPad (email + password).
+1. Sign in on the iPad (email + password + MFA code - authentication is the same in every version).
 2. Client list (no schedule counts, no Records / Today's Care nav).
 3. Open Liam Foster: basic client context.
 4. Add documentation → only **Care Activity** → Toileting (optional output) → Save.

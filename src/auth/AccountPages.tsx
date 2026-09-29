@@ -96,7 +96,7 @@ export function Terms({ surface }: { surface: Surface }) {
       <h1 className="auth-title">Terms of use · v{state.termsVersion}</h1>
       <div className="terms-box">
         <p><strong>Placeholder text.</strong> The client-approved terms document will be supplied before launch (roadmap 2.2).</p>
-        <p>You will access protected health information only for the clients you are assigned to, keep your credentials and PIN private, lock or switch user before handing over a shared device, and report suspected misuse.</p>
+        <p>You will access protected health information only for the clients you are assigned to, keep your credentials private and log out before handing over a shared device, and report suspected misuse.</p>
       </div>
       <Check label="I have read and accept the current terms of use" checked={agree} onChange={setAgree} />
       <div className="row" style={{ marginTop: 12 }}>

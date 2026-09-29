@@ -27,8 +27,8 @@ No maintenance workflow is duplicated across the two surfaces.
 | Roadmap | Capability | Registry id | Prototype route / screen | User | Surface | Removable | Depends on |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2.3, 2.5 | Sign in, logout, session end | `clientBoard` | `/care/signin`, `/admin/signin`, user menu → Log out | Both | Both | No | - |
-| 2.3 | MFA verification step | `mfa` | Sign-in step 2 (code `246810`) | Both | Both | Yes | - |
-| 2.1, 2.4 | Invitation activation (password; the PIN field only serves the future quick-switch idea), password recovery | `accountLifecycle` | `/care/activate`, `/{surface}/forgot`, Staff → Resend invite / Reset credentials | Both | Both | Yes | `staffManagement` |
+| 2.3, 7.1 | MFA verification step (common authentication, part of every version) | `mfa` | Sign-in step 2 (code `246810`) | Both | Both | No | - |
+| 2.1, 2.4 | Invitation activation and password recovery | `accountLifecycle` | `/care/activate`, `/{surface}/forgot`, Staff → Resend invite / Reset credentials | Both | Both | Yes | `staffManagement` |
 | 2.2 | Terms acceptance record | `termsAcceptance` | `/{surface}/terms` (shown when version not accepted) | Both | Both | Yes | - |
 | 4.1 | Care-area client board, open / initialise today's flow sheet | `clientBoard` | `/care/clients`, `/care/clients/:id` | Care Staff | iPad | No | - |
 | 4.5 | Routine care activities (toileting, brief change, enrichment, outdoor) | `activities` | Add documentation → Care Activity | Care Staff | iPad | No | - |

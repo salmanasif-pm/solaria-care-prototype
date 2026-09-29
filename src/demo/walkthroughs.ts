@@ -53,7 +53,7 @@ export const WALKTHROUGHS: Walkthrough[] = [
   {
     id: 'lean', title: 'C · Lean Phase 1', sub: 'Smallest viable product. Switches scope to “Leanest version” first.', preset: 'lean',
     steps: [
-      { title: 'Scope set to leanest version', body: 'Optional modules are switched off (see Scope). Sign in with email/employee ID and password.', route: '/care/signin', user: null, surface: 'care', target: 'signin' },
+      { title: 'Scope set to leanest version', body: 'Optional modules are switched off (see Scope). Sign in with email/employee ID, password and MFA code - common authentication stays in every version.', route: '/care/signin', user: null, surface: 'care', target: 'signin' },
       { title: 'Client list', body: 'The same client board, without schedule counts.', route: '/care/clients', user: 'u_james', surface: 'care', target: 'client-board' },
       { title: 'Open a client', body: 'Basic client context: name, DOB/age, care area, indicators.', route: '/care/clients/c_liam', user: 'u_james', surface: 'care', target: 'client-header' },
       { title: 'Record a routine care activity', body: 'Only Care Activity remains in the picker. Toileting with optional output.', route: '/care/clients/c_liam/document/activity', user: 'u_james', surface: 'care', target: 'doc-sheet' },

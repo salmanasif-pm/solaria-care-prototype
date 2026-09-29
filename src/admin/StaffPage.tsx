@@ -60,7 +60,7 @@ export function StaffPage() {
       {confirm && (
         <Confirm title={`Deactivate ${confirm.name}?`} danger confirmLabel="Deactivate" onCancel={() => setConfirm(null)}
           onConfirm={() => { actions.setStaffStatus(confirm.id, 'inactive'); toast(`${confirm.name} deactivated; active sessions revoked`, 'info'); setConfirm(null); }}
-          body="They can no longer sign in or switch in by PIN. Everything they documented stays attributed to them. You can reactivate the account later." />
+          body="They can no longer sign in. Everything they documented stays attributed to them. You can reactivate the account later." />
       )}
     </div>
   );
@@ -79,7 +79,7 @@ function StaffModal({ s: initial, isNew, areas, locations, emails, onClose, onSa
     onSave({ ...s, name: s.name.trim(), email: s.email.trim(), careAreas: s.role === 'admin' ? [...areas] : s.careAreas });
   };
   return (
-    <Modal title={isNew ? 'Invite staff member' : `Edit ${initial.name}`} sub={isNew ? 'They receive an invitation to activate their account and set a password and PIN.' : undefined} onClose={onClose} width={640}
+    <Modal title={isNew ? 'Invite staff member' : `Edit ${initial.name}`} sub={isNew ? 'They receive an invitation to activate their account and set a password.' : undefined} onClose={onClose} width={640}
       footer={<><Button variant="ghost" onClick={onClose}>Cancel</Button><Button variant="primary" onClick={save}>{isNew ? 'Send invitation' : 'Save changes'}</Button></>}>
       <div className="stack">
         <div className="grid-2">
