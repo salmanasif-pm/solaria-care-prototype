@@ -30,6 +30,7 @@ Phase 1 baseline hand-over on a shared iPad is log out → sign in with your own
 - [DEMO_WALKTHROUGHS.md](DEMO_WALKTHROUGHS.md) - presenter scripts (Admin setup, Care Staff day, Lean version)
 - [PROTOTYPE_SCOPE_MAP.md](PROTOTYPE_SCOPE_MAP.md) - roadmap ID → screen → user → surface → removable, plus assumptions and conflicts
 - [SCOPE_REDUCTION_NOTES.md](SCOPE_REDUCTION_NOTES.md) - what can be removed and what that removal affects
+- [docs/diagrams/](docs/diagrams/README.md) - Care Staff and Web Admin flow diagrams (PNG + SVG) to show before the demo
 
 ## Architecture
 
