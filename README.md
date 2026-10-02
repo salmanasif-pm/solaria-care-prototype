@@ -31,6 +31,7 @@ Phase 1 baseline hand-over on a shared iPad is log out → sign in with your own
 - [PROTOTYPE_SCOPE_MAP.md](PROTOTYPE_SCOPE_MAP.md) - roadmap ID → screen → user → surface → removable, plus assumptions and conflicts
 - [SCOPE_REDUCTION_NOTES.md](SCOPE_REDUCTION_NOTES.md) - what can be removed and what that removal affects
 - [docs/diagrams/](docs/diagrams/README.md) - Care Staff and Web Admin flow diagrams (PNG + SVG) to show before the demo
+- [PROTOTYPE_PLAYBOOK.md](PROTOTYPE_PLAYBOOK.md) - how we build these prototypes: kickoff prompt template, defaults, test bar, sandbox notes (for future Claude Code and GPT planning threads)
 
 ## Architecture
 
